@@ -3,21 +3,18 @@ import * as THREE from "three";
 export default class App {
   renderer: THREE.WebGLRenderer;
   scene: THREE.Scene;
-  camera: THREE.Camera;
+  camera: THREE.PerspectiveCamera;
   clock = new THREE.Clock();
   cube: THREE.Object3D;
+  needResize: boolean;
   constructor() {
-    //render
-    const width = document.getElementById("canvas-frame").clientWidth;
-    const height = document.getElementById("canvas-frame").clientHeight;
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
       canvas: document.getElementById("main-scene") as HTMLCanvasElement
     });
-    this.renderer.setSize(width, height);
     this.renderer.setClearColor(0x2f3c29, 1.0);
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
+    this.camera = new THREE.PerspectiveCamera(45, undefined, 1, 1000);
     this.camera.position.set(0, 15, -12);
     this.camera.up.set(0, 1, 0);
     this.camera.lookAt(new THREE.Vector3());
@@ -39,15 +36,28 @@ export default class App {
   }
 
   init(): void {
-    console.log("init");
+    this.windowResize();
   }
   render(): void {
-    console.log(this);
     const deltaTime = this.clock.getDelta();
+    if (this.needResize) this.windowResize();
     this.cube.rotateY(deltaTime * 1);
     this.cube.rotateX(deltaTime * 0.5);
     this.renderer.render(this.scene, this.camera);
     requestAnimationFrame(() => this.render());
+  }
+
+  windowResize(): void {
+    const width = document.getElementById("canvas-frame").clientWidth;
+    const height = document.getElementById("canvas-frame").clientHeight;
+    this.renderer.setSize(width, height);
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
+  }
+  bindWindowEvent(window: Window): void {
+    window.addEventListener("resize", () => {
+      this.needResize = true;
+    });
   }
 
   run(): void {
