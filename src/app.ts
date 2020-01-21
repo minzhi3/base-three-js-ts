@@ -6,7 +6,7 @@ export default class App {
   camera: THREE.PerspectiveCamera;
   clock = new THREE.Clock();
   cube: THREE.Object3D;
-  needResize: boolean;
+  needResize = false;
   constructor() {
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -40,7 +40,10 @@ export default class App {
   }
   render(): void {
     const deltaTime = this.clock.getDelta();
-    if (this.needResize) this.windowResize();
+    if (this.needResize) {
+      this.windowResize();
+      this.needResize = false;
+    }
     this.cube.rotateY(deltaTime * 1);
     this.cube.rotateX(deltaTime * 0.5);
     this.renderer.render(this.scene, this.camera);
