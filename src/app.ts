@@ -1,11 +1,12 @@
 import * as THREE from "three";
+import * as loader from "./utils/resource-manager";
 
 export default class App {
   renderer: THREE.WebGLRenderer;
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
   clock = new THREE.Clock();
-  cube: THREE.Object3D;
+  cube: THREE.Mesh;
   needResize = false;
   constructor() {
     this.renderer = new THREE.WebGLRenderer({
@@ -27,15 +28,18 @@ export default class App {
     this.scene.add(ambientLight);
 
     const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({
-      color: 0x00ff00
-    });
+
+    const material = new THREE.MeshLambertMaterial({});
     const cube = new THREE.Mesh(geometry, material);
     this.cube = cube;
     this.scene.add(cube);
   }
 
-  init(): void {
+  async init(): Promise<void> {
+    const texture = await loader.loadTexture("texture.png");
+    const material = this.cube.material as THREE.MeshLambertMaterial;
+    material.map = texture;
+    material.needsUpdate = true;
     this.windowResize();
   }
   render(): void {
