@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import * as loader from "./utils/resource-manager";
+import img from "./assets/texture.png";
 
 export default class App {
   renderer: THREE.WebGLRenderer;
@@ -36,7 +37,7 @@ export default class App {
   }
 
   async init(): Promise<void> {
-    const texture = await loader.loadTexture("texture.png");
+    const texture = await loader.loadTexture(img);
     const material = this.cube.material as THREE.MeshLambertMaterial;
     material.map = texture;
     material.needsUpdate = true;

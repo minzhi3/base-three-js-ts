@@ -18,10 +18,19 @@ module.exports = {
       {
         test: /\.ts$/,
         use: "ts-loader"
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+          {
+            loader: "url-loader",
+            options: {}
+          }
+        ]
       }
     ]
   },
   resolve: {
-    extensions: [".ts"]
+    extensions: [".ts", ".js"]
   }
 };
