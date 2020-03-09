@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import * as loader from "./utils/resource-manager";
 import img from "./assets/texture.png";
+import "./assets/main.css";
 
 export default class App {
   renderer: THREE.WebGLRenderer;

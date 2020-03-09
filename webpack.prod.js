@@ -1,16 +1,12 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  // モード値を production に設定すると最適化された状態で、
-  // development に設定するとソースマップ有効でJSファイルが出力される
   mode: "production",
-
-  // メインとなるJavaScriptファイル（エントリーポイント）
   entry: "./src/main.ts",
-  // ファイルの出力設定
   output: {
-    path: path.join(__dirname, "web_files"),
+    path: path.join(__dirname, "dist"),
     filename: "bundle.js"
   },
   module: {
@@ -32,5 +28,12 @@ module.exports = {
   },
   resolve: {
     extensions: [".ts", ".js"]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: "Playable",
+      filename: "index.html",
+      template: path.join(__dirname, "src", "index.ejs")
+    })
+  ]
 };
