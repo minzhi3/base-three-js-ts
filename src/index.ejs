@@ -7,6 +7,70 @@
 
   <body>
     <div id="canvas-frame">
+      <div id="ui-frame">
+        <svg id="ui-svg" viewBox="0 0 540 1080">
+          <symbol id="svg-loading-rolling" viewBox="0 0 100 100">
+            <path
+              fill="#fff"
+              d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50"
+            ></path>
+          </symbol>
+          <symbol id="finger" viewBox="0 0 30 30">
+            <image
+              width="30"
+              height="30"
+              xlink:href="data:image/png;base64,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"
+              transform="rotate(-45, 15, 15)"
+            ></image>
+          </symbol>
+          <path d="M 420 400 l 50 0" stroke="none" fill="none" id="path-done" />
+          <g id="tutorial1" transform="translate(350,650)">
+            <g class="pound-animation">
+              <use
+                class="pound-animation"
+                xlink:href="#finger"
+                width="60"
+                height="60"
+              ></use>
+            </g>
+          </g>
+          <g id="fail-group" visibility="hidden" transform="translate(185,605)">
+            <image id="retry-button" width="184.5" height="100"></image>
+          </g>
+          <image id="icon" x="420" y="900" width="120" height="120" />
+          <g id="next-group" visibility="hidden">
+            <g transform="translate(50,100)">
+              <image id="complete-text" width="481.5" height="150" />
+            </g>
+            <g transform="translate(185,605)">
+              <image id="next-button" width="184.5" height="100" />
+            </g>
+          </g>
+          <g transform="translate(270,965)">
+            <g>
+              <image id="install" x="-100" y="-25" width="200" height="70" />
+            </g>
+          </g>
+          <g id="loading">
+            <rect
+              x="-1000"
+              y="-1000"
+              width="3000"
+              height="3000"
+              fill="#000"
+            ></rect>
+            <g class="rotate-animation">
+              <g transform="translate(220,490)">
+                <use
+                  xlink:href="#svg-loading-rolling"
+                  width="100"
+                  height="100"
+                ></use>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
       <canvas id="main-scene"> </canvas>
     </div>
   </body>

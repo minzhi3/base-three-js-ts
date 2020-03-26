@@ -18,3 +18,50 @@ canvas#main-scene {
   left: 0;
   top: 0;
 }
+.hide {
+  display: none;
+}
+#ui-frame {
+  z-index: 10;
+  position: relative;
+  margin: auto;
+}
+
+#ui-svg {
+  position: relative;
+  margin: auto;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+    transform-origin: center;
+  }
+  100% {
+    transform: rotate(360deg);
+    transform-origin: center;
+  }
+}
+
+.rotate-animation {
+  animation: rotate 1s infinite ease-in-out;
+}
+
+@keyframes pound {
+  0% {
+    transform: none;
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: none;
+  }
+  100% {
+    transform: none;
+  }
+}
+
+.pound-animation {
+  animation: pound 2s infinite ease-in-out;
+}

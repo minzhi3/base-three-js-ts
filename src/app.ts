@@ -1,48 +1,61 @@
-import * as THREE from "three";
-import * as loader from "./utils/resource-manager";
-import img from "./assets/texture.png";
-import "./assets/main.css";
+import './assets/main.css';
 
-export default class App {
+import * as OIMO from 'oimo';
+import * as THREE from 'three';
+
+import {controller} from './controller';
+import {Dough} from './dough';
+import {uiController} from './ui';
+
+export class App {
   renderer: THREE.WebGLRenderer;
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
   clock = new THREE.Clock();
-  cube: THREE.Mesh;
   needResize = false;
+  state = 0;
+  physicsWorld: OIMO.World;
+  dough: Dough;
+  size = {width: 0, height: 0};
   constructor() {
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
-      canvas: document.getElementById("main-scene") as HTMLCanvasElement
+      canvas: document.getElementById('main-scene') as HTMLCanvasElement
     });
     this.renderer.setClearColor(0x2f3c29, 1.0);
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(45, undefined, 1, 1000);
-    this.camera.position.set(0, 15, -12);
+    this.camera = new THREE.PerspectiveCamera(60, undefined, 0.3, 1000);
+    this.camera.position.set(0, 4, -3);
     this.camera.up.set(0, 1, 0);
-    this.camera.lookAt(new THREE.Vector3());
+    this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    //light
-    const light = new THREE.DirectionalLight(0xebd6c8, 2.5);
-    light.position.set(-2, 3, -3);
-    const ambientLight = new THREE.AmbientLight(0xa2a8b6, 1.25);
+    // light
+    const light = new THREE.DirectionalLight(0xebd6c8, 1.1);
+    light.position.set(-5, 3, -3);
+    const ambientLight = new THREE.AmbientLight(0xa2a8b6, 1.1);
     this.scene.add(light);
     this.scene.add(ambientLight);
+    // physics
+    this.physicsWorld = new OIMO.World({
+      timestep: 1 / 60,
+      iterations: 8,
+      broadphase: 2,  // 1: brute force, 2: sweep & prune, 3: volume tree
+      worldscale: 1,
+      random: true,
+      info: true,  // display statistique
+      gravity: [0, -10, 0]
+    });
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-
-    const material = new THREE.MeshLambertMaterial({});
-    const cube = new THREE.Mesh(geometry, material);
-    this.cube = cube;
-    this.scene.add(cube);
+    // object
+    this.dough = new Dough(this.scene, this.physicsWorld);
   }
 
   async init(): Promise<void> {
-    const texture = await loader.loadTexture(img);
-    const material = this.cube.material as THREE.MeshLambertMaterial;
-    material.map = texture;
-    material.needsUpdate = true;
     this.windowResize();
+    controller.init();
+    uiController.init();
+    await Promise.all([this.dough.init()]);
+    uiController.hideLoading();
   }
   render(): void {
     const deltaTime = this.clock.getDelta();
@@ -50,25 +63,55 @@ export default class App {
       this.windowResize();
       this.needResize = false;
     }
-    this.cube.rotateY(deltaTime * 1);
-    this.cube.rotateX(deltaTime * 0.5);
+
+    this.mainloop(deltaTime);
+    this.scene.children.forEach(item => {
+      switch (item.userData['tag']) {
+        case 'dough':
+          this.dough.update(deltaTime);
+          break;
+      }
+    });
     this.renderer.render(this.scene, this.camera);
     requestAnimationFrame(() => this.render());
   }
 
   windowResize(): void {
-    const width = document.getElementById("canvas-frame").clientWidth;
-    const height = document.getElementById("canvas-frame").clientHeight;
+    const width = document.getElementById('canvas-frame').clientWidth;
+    const height = document.getElementById('canvas-frame').clientHeight;
     this.renderer.setSize(width, height);
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
+    uiController.setSize(height, width);
   }
   bindWindowEvent(window: Window): void {
-    window.addEventListener("resize", () => {
+    window.addEventListener('resize', () => {
       this.needResize = true;
     });
   }
+  setFullScreenInstall(): void {
+    const eventName = 'ontouchstart' in window ? 'touchstart' : 'click';
+    document.getElementById('install').removeEventListener(
+        eventName, uiController.installClick, false);
 
+    controller.clickHandler = (): void => {
+      uiController.installClick();
+    };
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  mainloop(deltaTime: number): void {
+    this.physicsWorld.step();
+    switch (this.state) {
+      case 0:
+        break;
+    }
+    return;
+  }
+
+  resizeRequest(width: number, height: number): void {
+    this.size = {width, height};
+    this.needResize = true;
+  }
   run(): void {
     this.render();
   }

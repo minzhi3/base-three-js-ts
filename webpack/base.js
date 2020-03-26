@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
@@ -32,12 +31,5 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js"]
   },
-  plugins: [
-    new MiniCssExtractPlugin(),
-    new HtmlWebpackPlugin({
-      title: "Playable",
-      filename: "index.html",
-      template: path.join(process.cwd(), "src", "index.ejs")
-    })
-  ]
+  plugins: [new MiniCssExtractPlugin()]
 };

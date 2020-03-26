@@ -1,3 +1,3 @@
-# base-three-js-ts
+# pizzaiolo-ad
 
-base project for three.js and webpack in typescript
+pizzaiolo playable

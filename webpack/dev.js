@@ -2,6 +2,7 @@
 const path = require("path");
 
 const webpackMerge = require("webpack-merge");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const base = require("./base");
 module.exports = webpackMerge(base, {
   mode: "development",
@@ -9,11 +10,11 @@ module.exports = webpackMerge(base, {
   module: {
     rules: [
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|gif|glb)$/i,
         use: [
           {
             loader: "file-loader",
-            options: {}
+            options: { name: "[path][name].[ext]" }
           }
         ]
       }
@@ -24,5 +25,12 @@ module.exports = webpackMerge(base, {
     compress: true,
     historyApiFallback: true,
     inline: true
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: "Playable",
+      filename: "index.html",
+      template: path.join(process.cwd(), "src", "index.ejs")
+    })
+  ]
 });
