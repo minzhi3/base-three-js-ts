@@ -14,19 +14,19 @@ module.exports = webpackMerge(base, {
         use: [
           {
             loader: "url-loader",
-            options: {}
-          }
-        ]
-      }
-    ]
+            options: {},
+          },
+        ],
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       title: "Playable",
       filename: "index.html",
       template: path.join(process.cwd(), "src", "index.ejs"),
-      inlineSource: ".(js|css)$"
+      inlineSource: ".(js|css)$",
     }),
-    new HtmlWebpackInlineSourcePlugin()
-  ]
+    new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin),
+  ],
 });
