@@ -1,13 +1,10 @@
 import * as THREE from "three";
-import { World } from "oimo";
 
 export abstract class BaseObject {
   object: THREE.Group;
   mainScene: THREE.Scene;
-  physicsWorld: World;
-  constructor(mainScene: THREE.Scene, physicsWorld: World, name: string) {
+  constructor(mainScene: THREE.Scene, name: string) {
     this.mainScene = mainScene;
-    this.physicsWorld = physicsWorld;
     this.object = new THREE.Group();
     this.object.name = name;
     this.object.userData["tag"] = name;

@@ -1,11 +1,10 @@
-import './assets/main.css';
+import "./assets/main.css";
 
-import * as OIMO from 'oimo';
-import * as THREE from 'three';
+import * as THREE from "three";
 
-import {controller} from './controller';
-import {Dough} from './dough';
-import {uiController} from './ui';
+import { controller } from "./controller";
+import { Dough } from "./dough";
+import { uiController } from "./ui";
 
 export class App {
   renderer: THREE.WebGLRenderer;
@@ -14,13 +13,12 @@ export class App {
   clock = new THREE.Clock();
   needResize = false;
   state = 0;
-  physicsWorld: OIMO.World;
   dough: Dough;
-  size = {width: 0, height: 0};
+  size = { width: 0, height: 0 };
   constructor() {
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
-      canvas: document.getElementById('main-scene') as HTMLCanvasElement
+      canvas: document.getElementById("main-scene") as HTMLCanvasElement,
     });
     this.renderer.setClearColor(0x2f3c29, 1.0);
     this.scene = new THREE.Scene();
@@ -35,19 +33,9 @@ export class App {
     const ambientLight = new THREE.AmbientLight(0xa2a8b6, 1.1);
     this.scene.add(light);
     this.scene.add(ambientLight);
-    // physics
-    this.physicsWorld = new OIMO.World({
-      timestep: 1 / 60,
-      iterations: 8,
-      broadphase: 2,  // 1: brute force, 2: sweep & prune, 3: volume tree
-      worldscale: 1,
-      random: true,
-      info: true,  // display statistique
-      gravity: [0, -10, 0]
-    });
 
     // object
-    this.dough = new Dough(this.scene, this.physicsWorld);
+    this.dough = new Dough(this.scene);
   }
 
   async init(): Promise<void> {
@@ -65,9 +53,9 @@ export class App {
     }
 
     this.mainloop(deltaTime);
-    this.scene.children.forEach(item => {
-      switch (item.userData['tag']) {
-        case 'dough':
+    this.scene.children.forEach((item) => {
+      switch (item.userData["tag"]) {
+        case "dough":
           this.dough.update(deltaTime);
           break;
       }
@@ -77,22 +65,23 @@ export class App {
   }
 
   windowResize(): void {
-    const width = document.getElementById('canvas-frame').clientWidth;
-    const height = document.getElementById('canvas-frame').clientHeight;
+    const width = document.getElementById("canvas-frame").clientWidth;
+    const height = document.getElementById("canvas-frame").clientHeight;
     this.renderer.setSize(width, height);
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     uiController.setSize(height, width);
   }
   bindWindowEvent(window: Window): void {
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       this.needResize = true;
     });
   }
   setFullScreenInstall(): void {
-    const eventName = 'ontouchstart' in window ? 'touchstart' : 'click';
-    document.getElementById('install').removeEventListener(
-        eventName, uiController.installClick, false);
+    const eventName = "ontouchstart" in window ? "touchstart" : "click";
+    document
+      .getElementById("install")
+      .removeEventListener(eventName, uiController.installClick, false);
 
     controller.clickHandler = (): void => {
       uiController.installClick();
@@ -100,7 +89,6 @@ export class App {
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   mainloop(deltaTime: number): void {
-    this.physicsWorld.step();
     switch (this.state) {
       case 0:
         break;
@@ -109,7 +97,7 @@ export class App {
   }
 
   resizeRequest(width: number, height: number): void {
-    this.size = {width, height};
+    this.size = { width, height };
     this.needResize = true;
   }
   run(): void {
