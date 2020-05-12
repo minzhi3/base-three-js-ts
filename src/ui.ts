@@ -1,7 +1,7 @@
-import nextImage from './assets/png/button_next.png';
-import installImage from './assets/png/button_now.png';
-import completeText from './assets/png/complete.png';
-import iconImage from './assets/png/icon.png';
+import nextImage from "./assets/png/button_next.png";
+import installImage from "./assets/png/button_now.png";
+import completeText from "./assets/png/complete.png";
+import iconImage from "./assets/png/icon.png";
 
 interface ImageInfo {
   src: string;
@@ -15,46 +15,47 @@ class UiController {
   nextGroup: HTMLElement;
   tutorial: HTMLElement[] = [];
   svgImageMap: Map<string, ImageInfo> = new Map([
-    ['next-button', {src: nextImage}],
-    ['install', {src: installImage}],
-    ['icon', {src: iconImage}],
-    ['complete-text', {src: completeText}],
+    ["next-button", { src: nextImage }],
+    ["install", { src: installImage }],
+    ["icon", { src: iconImage }],
+    ["complete-text", { src: completeText }],
   ]);
   init(): void {
     if (this._ready) return;
-    this.failGroup = document.getElementById('fail-group');
-    this.nextGroup = document.getElementById('next-group');
+    this.failGroup = document.getElementById("fail-group");
+    this.nextGroup = document.getElementById("next-group");
     for (let i = 1; i <= 1; i++)
       this.tutorial.push(document.getElementById(`tutorial${i}`));
     this.svgImageMap.forEach((value, key) => {
       const element = document.getElementById(key);
-      const {src} = value;
-      element.setAttributeNS('http://www.w3.org/1999/xlink', 'href', src);
+      const { src } = value;
+      element.setAttributeNS("http://www.w3.org/1999/xlink", "href", src);
     });
 
-    const eventName = 'ontouchstart' in window ? 'touchstart' : 'click';
-    document.getElementById('install').addEventListener(
-        eventName, this.installClick, false);
+    const eventName = "ontouchstart" in window ? "touchstart" : "click";
+    document
+      .getElementById("install")
+      .addEventListener(eventName, this.installClick, false);
 
     this._ready = true;
   }
 
   bindClickEvent(id: string, handler: () => void): void {
-    const eventName = 'ontouchstart' in window ? 'touchstart' : 'click';
+    const eventName = "ontouchstart" in window ? "touchstart" : "click";
     document.getElementById(id).addEventListener(eventName, handler, false);
   }
 
   setSize(height: number, width: number): void {
     if (height / width < 1.5) {
-      document.getElementById('ui-svg').style.height = height + 'px';
-      document.getElementById('ui-svg').style.width = height / 1.5 + 'px';
-      const frameWidth = document.getElementById('ui-frame').clientWidth;
-      document.getElementById('ui-svg').style.left =
-          (frameWidth - height / 1.5) / 2 + 'px';
+      document.getElementById("ui-svg").style.height = height + "px";
+      document.getElementById("ui-svg").style.width = height / 1.5 + "px";
+      const frameWidth = document.getElementById("ui-frame").clientWidth;
+      document.getElementById("ui-svg").style.left =
+        (frameWidth - height / 1.5) / 2 + "px";
     } else {
-      document.getElementById('ui-svg').style.width = width + 'px';
-      document.getElementById('ui-svg').style.height = height + 'px';
-      document.getElementById('ui-svg').style.left = '0px';
+      document.getElementById("ui-svg").style.width = width + "px";
+      document.getElementById("ui-svg").style.height = height + "px";
+      document.getElementById("ui-svg").style.left = "0px";
     }
   }
 
@@ -83,37 +84,37 @@ class UiController {
     }
   }
   private _setVisibility(element: HTMLElement, visible: boolean): void {
-    element.setAttribute('visibility', visible ? 'visible' : 'hidden');
+    element.setAttribute("visibility", visible ? "visible" : "hidden");
   }
   showInstallButton(): void {
-    document.getElementById('next-button')
-        .setAttribute('visibility', 'visible');
+    document
+      .getElementById("next-button")
+      .setAttribute("visibility", "visible");
   }
   hideLoading(): void {
-    document.getElementById('loading').setAttribute('visibility', 'hidden');
+    document.getElementById("loading").setAttribute("visibility", "hidden");
   }
   installClick(): void {
-    if (typeof FbPlayableAd !== 'undefined')
+    if (typeof FbPlayableAd !== "undefined")
       // facebook
       FbPlayableAd.onCTAClick();
-    else if (typeof ExitApi !== 'undefined')
+    else if (typeof ExitApi !== "undefined")
       // google
       ExitApi.exit();
-    else if (typeof dapi !== 'undefined') {
+    else if (typeof dapi !== "undefined") {
       // ironsource
       dapi.openStoreUrl();
-    } else if (typeof mraid !== 'undefined') {
+    } else if (typeof mraid !== "undefined") {
       // applovin
       const u = navigator.userAgent;
-      const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+      const isAndroid = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
       // var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
       if (isAndroid)
         mraid.open(
-            'https://play.google.com/store/apps/details?id=com.mix.color.paint.game');
-      else
-        mraid.open('https://apps.apple.com/app/id1492035864');
-    } else
-      alert('not in facebook or google-ads or applovin');
+          "https://play.google.com/store/apps/details?id=com.mix.color.paint.game"
+        );
+      else mraid.open("https://apps.apple.com/app/id1492035864");
+    } else alert("not in facebook or google-ads or applovin");
   }
 }
 

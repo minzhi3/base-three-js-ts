@@ -1,8 +1,8 @@
 import { App } from "./app";
 import { controller } from "./controller";
 import { uiController } from "./ui";
-const waitPromise: (time: number) => Promise<void> = time =>
-  new Promise(resolve => {
+const waitPromise: (time: number) => Promise<void> = (time) =>
+  new Promise((resolve) => {
     setTimeout(() => {
       resolve();
     }, time);

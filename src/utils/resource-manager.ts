@@ -8,7 +8,7 @@ const loadingManager = new THREE.LoadingManager(
   (item, loaded, total) => {
     console.log(`${loaded} of ${total} - ${item.substr(0, 100)}`);
   },
-  url => {
+  (url) => {
     console.error(`${url} error`);
   }
 );
@@ -20,13 +20,13 @@ export function loadText(url: string): Promise<string> {
   return new Promise((resolve, reject) => {
     textLoader.load(
       url,
-      response => {
+      (response) => {
         resolve(response as string);
       },
       () => {
         return;
       },
-      event => {
+      (event) => {
         reject(event.message);
       }
     );
@@ -37,13 +37,13 @@ export function loadTexture(url: string): Promise<THREE.Texture> {
   return new Promise((resolve, reject) => {
     textureLoader.load(
       url,
-      response => {
+      (response) => {
         resolve(response);
       },
       () => {
         return;
       },
-      event => {
+      (event) => {
         reject(event.message);
       }
     );
@@ -54,13 +54,13 @@ export function loadGltf(url: string): Promise<GLTF> {
   return new Promise((resolve, reject) => {
     gltfLoader.load(
       url,
-      response => {
+      (response) => {
         resolve(response);
       },
       () => {
         return;
       },
-      event => {
+      (event) => {
         reject(event.message);
       }
     );
