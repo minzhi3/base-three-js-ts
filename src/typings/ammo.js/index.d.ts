@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/class-name-casing */
 
 declare module "ammo.js" {
-  export function Ammo(param?: any): any;
+  export function Ammo(param?: typeof Ammo): Promise<typeof Ammo>;
   export default Ammo;
   export namespace Ammo {
     class btSoftBodyRigidBodyCollisionConfiguration {}

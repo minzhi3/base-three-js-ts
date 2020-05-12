@@ -1,33 +1,27 @@
 import Ammo from "ammo.js";
 
 export class Physics {
-  gravityConstant = -9.8;
+  readonly gravityConstant = -9.8;
   // Physics configuration
   collisionConfiguration: Ammo.btSoftBodyRigidBodyCollisionConfiguration;
-  dispatcher: any;
-  broadphase: any;
-  solver: any;
-
-  softBodySolver: any;
   physicsWorld: Ammo.btSoftRigidDynamicsWorld;
-  transformAux1: any;
+  transformAux1: Ammo.btTransform;
   init(): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       Ammo(Ammo).then(() => {
-        console.log(Ammo);
         this.collisionConfiguration = new Ammo.btSoftBodyRigidBodyCollisionConfiguration();
-        this.dispatcher = new Ammo.btCollisionDispatcher(
+        const dispatcher = new Ammo.btCollisionDispatcher(
           this.collisionConfiguration
         );
-        this.broadphase = new Ammo.btDbvtBroadphase();
-        this.solver = new Ammo.btSequentialImpulseConstraintSolver();
-        this.softBodySolver = new Ammo.btDefaultSoftBodySolver();
+        const broadphase = new Ammo.btDbvtBroadphase();
+        const solver = new Ammo.btSequentialImpulseConstraintSolver();
+        const softBodySolver = new Ammo.btDefaultSoftBodySolver();
         this.physicsWorld = new Ammo.btSoftRigidDynamicsWorld(
-          this.dispatcher,
-          this.broadphase,
-          this.solver,
+          dispatcher,
+          broadphase,
+          solver,
           this.collisionConfiguration,
-          this.softBodySolver
+          softBodySolver
         );
         this.transformAux1 = new Ammo.btTransform();
         this.physicsWorld.setGravity(
