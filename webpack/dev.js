@@ -14,23 +14,23 @@ module.exports = webpackMerge(base, {
         use: [
           {
             loader: "file-loader",
-            options: { name: "[path][name].[ext]" }
-          }
-        ]
-      }
-    ]
+            options: { name: "[path][name].[ext]" },
+          },
+        ],
+      },
+    ],
   },
   devServer: {
     contentBase: path.join(process.cwd(), "dist"),
     compress: true,
     historyApiFallback: true,
-    inline: true
+    inline: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
       title: "Playable",
       filename: "index.html",
-      template: path.join(process.cwd(), "src", "index.ejs")
-    })
-  ]
+      template: path.join(process.cwd(), "src", "index.ejs"),
+    }),
+  ],
 });

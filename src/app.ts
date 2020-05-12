@@ -5,6 +5,7 @@ import * as THREE from "three";
 import { controller } from "./controller";
 import { Dough } from "./dough";
 import { uiController } from "./ui";
+import { Physics } from "./physics";
 
 export class App {
   renderer: THREE.WebGLRenderer;
@@ -13,6 +14,7 @@ export class App {
   clock = new THREE.Clock();
   needResize = false;
   state = 0;
+  physicsWorld: Physics;
   dough: Dough;
   size = { width: 0, height: 0 };
   constructor() {
@@ -34,8 +36,11 @@ export class App {
     this.scene.add(light);
     this.scene.add(ambientLight);
 
+    //physics
+    this.physicsWorld = new Physics();
+
     // object
-    this.dough = new Dough(this.scene);
+    this.dough = new Dough(this.scene, this.physicsWorld);
   }
 
   async init(): Promise<void> {
@@ -43,6 +48,7 @@ export class App {
     controller.init();
     uiController.init();
     await Promise.all([this.dough.init()]);
+    await this.physicsWorld.init();
     uiController.hideLoading();
   }
   render(): void {

@@ -28,7 +28,8 @@
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^2.31.0",
     "@typescript-eslint/parser": "^2.31.0",
-    "ammo.js": "0.0.10",
+    "ammo.js": "github:kripken/ammo.js",
+    "fs": "0.0.1-security",
     "three": "^0.116.1"
   }
 }

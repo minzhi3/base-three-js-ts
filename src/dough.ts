@@ -1,13 +1,14 @@
 import * as THREE from "three";
 
 import { BaseObject } from "./base-object";
+import { Physics } from "./physics";
 // import * as loader from './utils/resource-manager';
 
 export class Dough extends BaseObject {
   object: THREE.Group;
   mainScene: THREE.Scene;
-  constructor(mainScene: THREE.Scene) {
-    super(mainScene, "dough");
+  constructor(mainScene: THREE.Scene, world: Physics) {
+    super(mainScene, world, "dough");
   }
   async init(): Promise<void> {
     const geometry = new THREE.SphereBufferGeometry(1, 16, 16);
