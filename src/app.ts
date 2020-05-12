@@ -6,6 +6,8 @@ import { controller } from "./controller";
 import { Dough } from "./dough";
 import { uiController } from "./ui";
 import { Physics } from "./physics";
+import { Cube } from "./cube";
+import Ammo from "ammo.js";
 
 export class App {
   renderer: THREE.WebGLRenderer;
@@ -17,6 +19,7 @@ export class App {
   physicsWorld: Physics;
   dough: Dough;
   size = { width: 0, height: 0 };
+  cube: Cube;
   constructor() {
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -41,15 +44,24 @@ export class App {
 
     // object
     this.dough = new Dough(this.scene, this.physicsWorld);
+    this.cube = new Cube(this.scene, this.physicsWorld);
   }
 
   async init(): Promise<void> {
     this.windowResize();
     controller.init();
     uiController.init();
-    await Promise.all([this.dough.init()]);
+    await Promise.all([this.dough.init(), this.cube.init()]);
     await this.physicsWorld.init();
     uiController.hideLoading();
+    const shape = new Ammo.btBoxShape(new Ammo.btVector3(1, 1, 1));
+    this.physicsWorld.createRigidBody(
+      this.cube.object,
+      shape,
+      1,
+      new THREE.Vector3(1, 1, 1),
+      new THREE.Quaternion()
+    );
   }
   render(): void {
     const deltaTime = this.clock.getDelta();
@@ -57,13 +69,15 @@ export class App {
       this.windowResize();
       this.needResize = false;
     }
-
+    this.physicsWorld.updatePhysics(deltaTime);
     this.mainloop(deltaTime);
     this.scene.children.forEach((item) => {
       switch (item.userData["tag"]) {
         case "dough":
           this.dough.update(deltaTime);
           break;
+        case "cube":
+          this.cube.update(deltaTime);
       }
     });
     this.renderer.render(this.scene, this.camera);
