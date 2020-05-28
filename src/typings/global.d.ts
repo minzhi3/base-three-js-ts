@@ -13,6 +13,10 @@ declare module "*.glb" {
   export default value;
 }
 
+declare module "*.glsl" {
+  const value: string;
+  export default value;
+}
 declare namespace FbPlayableAd {
   function onCTAClick(): void;
 }

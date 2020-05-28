@@ -10,7 +10,7 @@ module.exports = webpackMerge(base, {
   module: {
     rules: [
       {
-        test: /\.(png|jpg|gif|glb)$/i,
+        test: /\.(png|jpg|gif|glb|glsl)$/i,
         use: [
           {
             loader: "url-loader",
