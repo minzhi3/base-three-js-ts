@@ -8,6 +8,7 @@ import { uiController } from "./ui";
 import { Physics } from "./physics";
 import { Cube } from "./cube";
 import Ammo from "ammo.js";
+import { Paritcle } from "./particle";
 
 export class App {
   renderer: THREE.WebGLRenderer;
@@ -18,6 +19,7 @@ export class App {
   state = 0;
   physicsWorld: Physics;
   dough: Dough;
+  particle: Paritcle;
   size = { width: 0, height: 0 };
   cube: Cube;
   constructor() {
@@ -45,13 +47,18 @@ export class App {
     // object
     this.dough = new Dough(this.scene, this.physicsWorld);
     this.cube = new Cube(this.scene, this.physicsWorld);
+    this.particle = new Paritcle(this.scene, this.physicsWorld);
   }
 
   async init(): Promise<void> {
     this.windowResize();
     controller.init();
     uiController.init();
-    await Promise.all([this.dough.init(), this.cube.init()]);
+    await Promise.all([
+      this.dough.init(),
+      this.cube.init(),
+      this.particle.init(),
+    ]);
     await this.physicsWorld.init();
     uiController.hideLoading();
     const shape = new Ammo.btBoxShape(new Ammo.btVector3(1, 1, 1));
@@ -71,15 +78,9 @@ export class App {
     }
     this.physicsWorld.updatePhysics(deltaTime);
     this.mainloop(deltaTime);
-    this.scene.children.forEach((item) => {
-      switch (item.userData["tag"]) {
-        case "dough":
-          this.dough.update(deltaTime);
-          break;
-        case "cube":
-          this.cube.update(deltaTime);
-      }
-    });
+    this.dough.update(deltaTime);
+    this.cube.update(deltaTime);
+    this.particle.update(deltaTime);
     this.renderer.render(this.scene, this.camera);
     requestAnimationFrame(() => this.render());
   }
