@@ -12,7 +12,17 @@ varying float vType;
 void main() {
   #include <color_vertex>
   #include <begin_vertex>
-
+  float v0 = 1.5;
+  float a = 1.5;
+  float v = v0 - time * a;
+  float d = 0.0;
+  if (v > 0.0){
+    d = (v + v0) * time * 0.5;
+  }else{
+    d = v0 * v0 / a * 0.5;
+  }
+  transformed.x = transformed.x + position.x * d;
+  transformed.z = transformed.z + position.z * d;
   transformed.y = transformed.y -(0.25 + 0.4* rand(position.xy))*time;
   // if (transformed.y < -2.0) transformed.y = -2.0;
   #include <morphtarget_vertex>

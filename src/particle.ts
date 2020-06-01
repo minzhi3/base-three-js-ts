@@ -20,7 +20,7 @@ export class Particle extends BaseObject {
     super(mainScene, world, "particle");
   }
   async init(): Promise<void> {
-    this.geometry = new THREE.SphereBufferGeometry(1, 8, 8);
+    this.geometry = new THREE.BufferGeometry();
     const particleTexture = await loader.loadTexture(particleImage);
     const fragShader = await loader.loadText(fragGlsl);
     const vertexShader = await loader.loadText(vertexGlsl);
@@ -39,15 +39,17 @@ export class Particle extends BaseObject {
       //console.log(shader.uniforms);
       this.materialShader = shader;
     };
-    const pos = this.geometry.getAttribute("position") as THREE.BufferAttribute;
-    for (let i = 0; i < pos.count; i++) {
-      this.pointList.push(
-        new THREE.Vector3(pos.getX(i), pos.getY(i), pos.getZ(i))
-      );
+    const count = 200;
+    const area = 1.5;
+    for (let i = 0; i < count; i++) {
+      const x = MathUtils.randFloat(-area, area);
+      const y = MathUtils.randFloat(-area, area);
+      const z = MathUtils.randFloat(-area, area);
+      this.pointList.push(new THREE.Vector3(x, y, z));
     }
-    console.log(pos);
+    this.geometry.setFromPoints(this.pointList);
     const colorAttribute = new THREE.BufferAttribute(
-      new Float32Array(pos.count),
+      new Float32Array(count),
       1
     );
     for (let i = 0; i < colorAttribute.count; i++) {
@@ -56,9 +58,9 @@ export class Particle extends BaseObject {
     }
     this.geometry.setAttribute("type", colorAttribute);
 
-    const sphere = new THREE.Points(this.geometry, this.material);
-    this.object.add(sphere);
-    this.object.position.setZ(-1);
+    const particle = new THREE.Points(this.geometry, this.material);
+    this.object.add(particle);
+    this.object.position.setZ(0);
 
     this.mainScene.add(this.object);
   }
