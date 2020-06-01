@@ -4,7 +4,6 @@ import { BaseObject } from "./base-object";
 import { Physics } from "./physics";
 import { MathUtils } from "three";
 import particleImage from "./assets/png/confetti.png";
-import rotateGlsl from "./assets/rotate-uv.glsl";
 import fragGlsl from "./assets/fragshader.glsl";
 import vertexGlsl from "./assets/vertexshader.glsl";
 import * as loader from "./utils/resource-manager";
