@@ -29,8 +29,14 @@ declare namespace dapi {
   function isViewable(): boolean;
   function getScreenSize(): { width: number; height: number };
   function getAudioVolume(): number;
-  function addEventListener(eventName: string, callback: Function): void;
-  function removeEventListener(eventName: string, callback: Function): void;
+  function addEventListener(
+    eventName: string,
+    callback: (arg0: unknown) => void
+  ): void;
+  function removeEventListener(
+    eventName: string,
+    callback: (event: DapiEvent) => void
+  ): void;
   interface DapiEvent {
     isViewable: boolean;
   }
