@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 
-const webpackMerge = require("webpack-merge");
+const { merge } = require("webpack-merge");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const base = require("./base");
-module.exports = webpackMerge(base, {
+module.exports = merge(base, {
   mode: "development",
   devtool: "eval-source-map",
   module: {

@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 
-const webpackMerge = require("webpack-merge");
+const { merge } = require("webpack-merge");
 const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const base = require("./base");
-module.exports = webpackMerge(base, {
+module.exports = merge(base, {
   mode: "production",
   module: {
     rules: [
