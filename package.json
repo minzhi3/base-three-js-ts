@@ -23,7 +23,7 @@
     "ammo.js": "github:kripken/ammo.js",
     "css-loader": "^5.0.0",
     "fs": "0.0.1-security",
-    "three": "^0.121.1",
+    "three": "^0.125.0",
     "ts-loader": "^8.0.6",
     "typescript": "^4.0.3",
     "webpack-merge": "^5.2.0",
