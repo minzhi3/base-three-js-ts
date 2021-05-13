@@ -1,4 +1,5 @@
 import Ammo from "ammo.js";
+import * as THREE from "three";
 
 export class Physics {
   readonly gravityConstant = -9.8;
@@ -10,7 +11,8 @@ export class Physics {
   init(): Promise<void> {
     return new Promise((resolve) => {
       Ammo(Ammo).then(() => {
-        this.collisionConfiguration = new Ammo.btSoftBodyRigidBodyCollisionConfiguration();
+        this.collisionConfiguration =
+          new Ammo.btSoftBodyRigidBodyCollisionConfiguration();
         const dispatcher = new Ammo.btCollisionDispatcher(
           this.collisionConfiguration
         );

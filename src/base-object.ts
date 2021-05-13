@@ -12,6 +12,6 @@ export abstract class BaseObject {
     this.object.userData["tag"] = name;
     this.physicsWorld = world;
   }
-  abstract async init(): Promise<void>;
-  abstract update(deltaTime: number);
+  abstract init(): Promise<void>;
+  abstract update(deltaTime: number): void;
 }
