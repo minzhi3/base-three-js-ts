@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/class-name-casing */
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // from https://github.com/giniedp/ammojs-typed/blob/master/ammo/ammo.js
 
 declare module "ammo.js" {
