@@ -9,7 +9,7 @@ base project for three.js and webpack in typescript
 
 ## Build
 
-1. Make directionary `dist` if it is not existed
+1. Make directory `dist` if it does not exist
 2. `npm run build`
 
 ## Test
