@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: path.join(process.cwd(), "src", "main.ts"),
@@ -18,7 +17,7 @@ module.exports = {
         test: /\.css$/i,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
+            loader: "style-loader",
           },
           {
             loader: "css-loader",
@@ -28,11 +27,11 @@ module.exports = {
       },
     ],
   },
-  node: {
-    fs: "empty",
-  },
   resolve: {
     extensions: [".ts", ".js"],
-  },
-  plugins: [new MiniCssExtractPlugin()],
+    fallback: {
+      fs: false,
+      path: false
+    }
+  }
 };

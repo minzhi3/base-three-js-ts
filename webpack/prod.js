@@ -34,11 +34,10 @@ module.exports = merge(base, {
       filename: "index.html",
       template: path.join(process.cwd(), "src", "index.ejs"),
       minify: { collapseWhitespace: true },
-      //inlineSource: ".(js|css)$",
       isIronSource,
       isToutiao,
       isGoogle,
     }),
-    new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [".(js|css)$"]),
+    new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/.(js|css)$/, /main.css/]),
   ],
 });
