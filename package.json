@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --host 0.0.0.0 --config webpack/dev.js",
+    "start": "webpack serve --host 0.0.0.0 --config webpack/dev.js",
     "build": "webpack  --config webpack/prod.js",
     "analyz": "webpack --config webpack/analyze.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,8 +16,8 @@
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
     "eslint": "^7.26.0",
-    "webpack-bundle-analyzer": "^3.9.0",
-    "webpack-cli": "^3.3.12",
+    "webpack-bundle-analyzer": "^4.4.2",
+    "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
