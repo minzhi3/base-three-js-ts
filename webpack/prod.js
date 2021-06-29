@@ -2,7 +2,7 @@
 const path = require("path");
 
 const { merge } = require("webpack-merge");
-const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
+const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const base = require("./base");
 
@@ -34,11 +34,11 @@ module.exports = merge(base, {
       filename: "index.html",
       template: path.join(process.cwd(), "src", "index.ejs"),
       minify: { collapseWhitespace: true },
-      inlineSource: ".(js|css)$",
+      //inlineSource: ".(js|css)$",
       isIronSource,
       isToutiao,
       isGoogle,
     }),
-    new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin),
+    new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [".(js|css)$"]),
   ],
 });
